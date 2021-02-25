@@ -4,7 +4,6 @@ package xyz.property.data.search.resource;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.infrastructure.Infrastructure;
-import lombok.SneakyThrows;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -37,6 +36,29 @@ public class SearchResource {
     private String scrollId;
     private SearchResponse searchResponse;
 
+    @GET
+    @Path("/available")
+    @Produces(MediaType.SERVER_SENT_EVENTS)
+    @RestSseElementType(MediaType.APPLICATION_JSON)
+    public Multi<SearchHit> getAllAvailable() throws IOException {
+
+        initSearchScrollContext();
+
+        Multi<SearchHit> scrollResponse = Multi.createBy()
+                .repeating()
+                .uni(this::getScrollHits)
+                .whilst(hits -> hits.getHits() != null && hits.getHits().length > 0)
+                .runSubscriptionOn(Infrastructure.getDefaultExecutor())
+                .onItem()
+                .disjoint();
+
+        Multi<SearchHit> initialSearchResponse = Multi.createFrom().items(searchResponse.getHits().getHits());
+
+        return Multi.createBy()
+                .merging()
+                .streams(initialSearchResponse, scrollResponse);
+    }
+
 
 
     private void initSearchScrollContext() throws IOException {
@@ -62,29 +84,5 @@ public class SearchResource {
             return Uni.createFrom().failure(new ElasticsearchException(e));
         }
     }
-
-    @GET
-    @Path("/available")
-    @Produces(MediaType.SERVER_SENT_EVENTS)
-    @RestSseElementType(MediaType.APPLICATION_JSON)
-    public Multi<SearchHit> getAllAvailable() throws IOException {
-
-        initSearchScrollContext();
-
-        Multi<SearchHit> scrollResponse = Multi.createBy()
-                .repeating()
-                .uni(this::getScrollHits)
-                .whilst(hits -> hits.getHits() != null && hits.getHits().length > 0)
-                .runSubscriptionOn(Infrastructure.getDefaultExecutor())
-                .onItem()
-                .disjoint();
-
-        Multi<SearchHit> initialSearchResponse = Multi.createFrom().items(searchResponse.getHits().getHits());
-
-        return Multi.createBy()
-                .merging()
-                .streams(initialSearchResponse, scrollResponse);
-    }
-
 
 }

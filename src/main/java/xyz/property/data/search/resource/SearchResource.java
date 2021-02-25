@@ -5,6 +5,7 @@ import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.infrastructure.Infrastructure;
 import lombok.SneakyThrows;
+import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchScrollRequest;
@@ -23,6 +24,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 
 @Path("/search")
 public class SearchResource {
@@ -36,8 +38,8 @@ public class SearchResource {
     private SearchResponse searchResponse;
 
 
-    @SneakyThrows
-    private void initSearchScrollContext() {
+
+    private void initSearchScrollContext() throws IOException {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(QueryBuilders.termQuery("property.published", true));
         SearchRequest searchRequest = new SearchRequest("properties_for_sale");
@@ -48,21 +50,24 @@ public class SearchResource {
     }
 
 
-    @SneakyThrows
-    private Uni<SearchHits> getScrollHits() {
-        SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
-        scrollRequest.scroll(scroll);
-        SearchResponse scrollResponse = client.scroll(scrollRequest, RequestOptions.DEFAULT);
-        scrollId = scrollResponse.getScrollId();
-        return Uni.createFrom().item(scrollResponse.getHits());
+    private Uni<SearchHits> getScrollHits(){
+        try {
+            SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
+            scrollRequest.scroll(scroll);
+            SearchResponse scrollResponse = client.scroll(scrollRequest, RequestOptions.DEFAULT);
+            scrollId = scrollResponse.getScrollId();
+            return Uni.createFrom().item(scrollResponse.getHits());
+        }
+        catch (IOException e){
+            return Uni.createFrom().failure(new ElasticsearchException(e));
+        }
     }
-
 
     @GET
     @Path("/available")
     @Produces(MediaType.SERVER_SENT_EVENTS)
     @RestSseElementType(MediaType.APPLICATION_JSON)
-    public Multi<SearchHit> getAllAvailable() {
+    public Multi<SearchHit> getAllAvailable() throws IOException {
 
         initSearchScrollContext();
 

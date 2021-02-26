@@ -1,27 +1,20 @@
 package xyz.property.data.search.resource;
 
 
-import io.smallrye.mutiny.Multi;
-import io.smallrye.mutiny.Uni;
-import io.smallrye.mutiny.infrastructure.Infrastructure;
-import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchScrollRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.Scroll;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.jboss.resteasy.reactive.RestSseElementType;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 
@@ -31,58 +24,26 @@ public class SearchResource {
     @Inject
     RestHighLevelClient client;
 
-    final Scroll scroll = new Scroll(TimeValue.timeValueMillis(2000L));
+    final private SearchSourceBuilder searchSourceBuilder;
+    final private SearchRequest searchRequest;
 
-    private String scrollId;
-    private SearchResponse searchResponse;
-
-    @GET
-    @Path("/available")
-    @Produces(MediaType.SERVER_SENT_EVENTS)
-    @RestSseElementType(MediaType.APPLICATION_JSON)
-    public Multi<SearchHit> getAllAvailable() throws IOException {
-
-        initSearchScrollContext();
-
-        Multi<SearchHit> scrollResponse = Multi.createBy()
-                .repeating()
-                .uni(this::getScrollHits)
-                .whilst(hits -> hits.getHits() != null && hits.getHits().length > 0)
-                .runSubscriptionOn(Infrastructure.getDefaultExecutor())
-                .onItem()
-                .disjoint();
-
-        Multi<SearchHit> initialSearchResponse = Multi.createFrom().items(searchResponse.getHits().getHits());
-
-        return Multi.createBy()
-                .merging()
-                .streams(initialSearchResponse, scrollResponse);
-    }
-
-
-
-    private void initSearchScrollContext() throws IOException {
+    public SearchResource() {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(QueryBuilders.termQuery("property.published", true));
-        SearchRequest searchRequest = new SearchRequest("properties_for_sale");
-        searchRequest.scroll(scroll);
-        searchRequest.source(searchSourceBuilder);
-        searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
-        scrollId = searchResponse.getScrollId();
+        searchSourceBuilder.sort(SortBuilders.fieldSort("property_key.keyword").order(SortOrder.DESC));
+        this.searchSourceBuilder =  searchSourceBuilder;
+        this.searchRequest = new SearchRequest("properties_for_sale");
     }
 
-
-    private Uni<SearchHits> getScrollHits(){
-        try {
-            SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
-            scrollRequest.scroll(scroll);
-            SearchResponse scrollResponse = client.scroll(scrollRequest, RequestOptions.DEFAULT);
-            scrollId = scrollResponse.getScrollId();
-            return Uni.createFrom().item(scrollResponse.getHits());
+    @GET
+    @Path("/properties-for-sale")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SearchResponse getAvailable(@QueryParam("search_after") String searchIndex) throws IOException {
+        if(searchIndex != null ){
+            searchSourceBuilder.searchAfter(new Object[]{searchIndex});
         }
-        catch (IOException e){
-            return Uni.createFrom().failure(new ElasticsearchException(e));
-        }
+        searchRequest.source(searchSourceBuilder);
+        return client.search(searchRequest, RequestOptions.DEFAULT);
     }
 
 }

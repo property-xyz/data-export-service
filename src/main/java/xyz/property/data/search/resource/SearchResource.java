@@ -42,7 +42,6 @@ public class SearchResource {
     @Path("/properties-for-sale")
     @Retry
     @CircuitBreaker
-    @Timeout(500)
     @Produces(MediaType.APPLICATION_JSON)
     public SearchResponse getAvailable(@QueryParam("search_after") String searchIndex) throws IOException {
         if (searchIndex != null) {

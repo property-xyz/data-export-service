@@ -29,7 +29,7 @@ spec:
 {{- if .Values.jxRequirements.ingress.tls.enabled }}
   tls:
   - hosts:
-    - {{ .Values.service.name }}{{ .Values.jxRequirements.ingress.namespaceSubDomain }}{{ .Values.jxRequirements.ingress.domain }}
+    - search.{{ .Values.jxRequirements.ingress.domain }}
 {{- if and (hasKey .Values.jxRequirements.ingress.tls "secretName") (.Values.jxRequirements.ingress.tls.secretName) }}
     secretName: "{{ .Values.jxRequirements.ingress.tls.secretName }}"
 {{- else if .Values.jxRequirements.ingress.tls.production }}

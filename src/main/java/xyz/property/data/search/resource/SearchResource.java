@@ -1,6 +1,9 @@
 package xyz.property.data.search.resource;
 
 
+import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.Retry;
+import org.eclipse.microprofile.faulttolerance.Timeout;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -31,15 +34,18 @@ public class SearchResource {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(QueryBuilders.termQuery("property.published", true));
         searchSourceBuilder.sort(SortBuilders.fieldSort("property_key.keyword").order(SortOrder.DESC));
-        this.searchSourceBuilder =  searchSourceBuilder;
+        this.searchSourceBuilder = searchSourceBuilder;
         this.searchRequest = new SearchRequest("properties_for_sale");
     }
 
     @GET
     @Path("/properties-for-sale")
+    @Retry
+    @CircuitBreaker
+    @Timeout(500)
     @Produces(MediaType.APPLICATION_JSON)
     public SearchResponse getAvailable(@QueryParam("search_after") String searchIndex) throws IOException {
-        if(searchIndex != null ){
+        if (searchIndex != null) {
             searchSourceBuilder.searchAfter(new Object[]{searchIndex});
         }
         searchRequest.source(searchSourceBuilder);

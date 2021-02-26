@@ -46,10 +46,11 @@ public class SearchResource {
     @Produces(MediaType.APPLICATION_JSON)
     public SearchResponse getAvailable(@QueryParam("search_after") String searchIndex) throws IOException {
         if (searchIndex != null) {
-            searchSourceBuilder.searchAfter(new Object[]{searchIndex});
+            searchSourceBuilder.searchAfter(new Object[]{searchIndex});          //details at https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html
         }
         searchRequest.source(searchSourceBuilder);
         return client.search(searchRequest, RequestOptions.DEFAULT);
     }
+
 
 }

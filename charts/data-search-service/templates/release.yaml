@@ -1,0 +1,218 @@
+{{- if .Capabilities.APIVersions.Has "jenkins.io/v1/Release" }}
+apiVersion: jenkins.io/v1
+kind: Release
+metadata:
+  creationTimestamp: "2021-02-26T16:36:14Z"
+  deletionTimestamp: null
+  name: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  commits:
+  - author:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    branch: master
+    committer:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    message: |
+      chore: release 0.0.1
+    sha: 3c1d683579946d4b9f926ac062cae6943a4109da
+  - author:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    branch: master
+    committer:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    message: |
+      chore: add variables
+    sha: fcfbd4d14996420ebaeaa983eef73d8e9c58e946
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      fix: enable legacy jar for kaniko
+    sha: 685c577d772f8bd385478fc3130943294a1f75ec
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      fix: kaniko chown bug
+    sha: 71537e28baa4a9cf3adee340ba4cc95dce82822a
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      fix: kaniko chown bug
+    sha: ec3f06c1cfa0505299f2e904080e04ecba50a642
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      fix: Dockerfile
+    sha: 4357fb0ae96825460ddabda07f836c3713dbb317
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      fix: Dockerfile
+    sha: 0b7c02d026bb8784e0441efa11df3743b4707ada
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      fix: Dockerfile
+    sha: d8453f332cf98c6ee1e5721af8a514a00569bfd8
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      fix: Dockerfile
+    sha: 5873ba51c137babe2714fdb6cbacd7358f9c042c
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      feat: config k8n artefacts
+    sha: ad32a42ccaba7d4e94a892e6df8c38b150e5bb51
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      fix(plugins): use a better version of maven plugins
+    sha: fb629a9741d5e2cd706ba1d01c7dec990160fc75
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      chore: Jenkins X build pack
+    sha: 92fd31739e80d9589de89316a1e628c2aa9b276a
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      feat: add fault tolerance
+    sha: 4a52a69c154a1d6eddf992279b5b3e2847cbce6c
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      feat: add micrometer support
+    sha: 9a4a59a881bd13a4b0bafe7bb58f765222b911ee
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      feat: add oas support
+    sha: faee7a352da129ee091ddd83c00bed059614dadc
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      feat: add oidc
+    sha: 2cf59b2fed4618d6688498ad789f54b3e64f797f
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      feat: add unit test
+    sha: 258cc8f49d1c48c0d9ee1a22cd346e3e57938858
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      fix: handle excpetions
+    sha: 862c05e16d373ed0293df619916caacfc42d0021
+  - author:
+      email: bot@renovateapp.com
+      name: Renovate Bot
+    branch: master
+    committer:
+      email: bot@renovateapp.com
+      name: Renovate Bot
+    message: |
+      Add renovate.json
+    sha: 915ba59d7a8209c9fdcf86a0513cf77dbce32ea7
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      chore: ad search resource
+    sha: 42356114601a953e13b1c4bb731f6244bb5be0fc
+  gitHttpUrl: https://github.com/property-xyz/data-search-service
+  gitOwner: property-xyz
+  gitRepository: data-search-service
+  name: '{{ .Chart.Name }}'
+  releaseNotesURL: https://github.com/property-xyz/data-search-service/releases/tag/v0.0.2
+  version: v0.0.2
+status: {}
+ 
+{{- end }}

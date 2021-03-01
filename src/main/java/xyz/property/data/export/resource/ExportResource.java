@@ -1,10 +1,9 @@
-package xyz.property.data.search.resource;
+package xyz.property.data.export.resource;
 
 
 import io.quarkus.security.Authenticated;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Retry;
-import org.eclipse.microprofile.faulttolerance.Timeout;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -23,7 +22,7 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 
 @Path("/")
-public class SearchResource {
+public class ExportResource {
 
     @Inject
     RestHighLevelClient client;
@@ -31,7 +30,7 @@ public class SearchResource {
     final private SearchSourceBuilder searchSourceBuilder;
     final private SearchRequest searchRequest;
 
-    public SearchResource() {
+    public ExportResource() {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(QueryBuilders.termQuery("property.published", true));
         searchSourceBuilder.sort(SortBuilders.fieldSort("property_key.keyword").order(SortOrder.DESC));
@@ -41,9 +40,9 @@ public class SearchResource {
 
     @GET
     @Path("/properties-for-sale")
+    @Authenticated
     @Retry
     @CircuitBreaker
-    @Authenticated
     @Produces(MediaType.APPLICATION_JSON)
     public SearchResponse getAvailable(@QueryParam("search_after") String searchIndex) throws IOException {
         if (searchIndex != null) {

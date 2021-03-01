@@ -45,7 +45,7 @@ canary:
   host: ""
 
 service:
-  name: data-search-service
+  name: data-export-service
   type: ClusterIP
   externalPort: 80
   internalPort: 8080

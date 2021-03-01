@@ -1,4 +1,4 @@
-package xyz.property.data.search.resource;
+package xyz.property.data.export.resource;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.http.HttpStatus;

@@ -1,0 +1,108 @@
+{{- if .Capabilities.APIVersions.Has "jenkins.io/v1/Release" }}
+apiVersion: jenkins.io/v1
+kind: Release
+metadata:
+  creationTimestamp: "2021-03-01T11:29:36Z"
+  deletionTimestamp: null
+  name: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  commits:
+  - author:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    branch: master
+    committer:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    message: |
+      chore: release 0.2.0
+    sha: 2db49ddfee95f6d0d6ec3c000ebd9610e0139451
+  - author:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    branch: master
+    committer:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    message: |
+      chore: add variables
+    sha: 77340f892aa3995c57b98f8248c97a9eed6609cc
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      fix: artifact name
+    sha: 606c9c583ed6457e7dc5ca978f615cfa8dc447e3
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      chore: delete test folder
+    sha: be9fd47152d919da6a003a1ee88992222570089c
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      chore: rename project
+    sha: f57a04cd84557861bc35d2d63ab14313cccc9e40
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      chore: rename project
+    sha: b80469c0df039481af350d1e46048f9c2e47424d
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      feat: change ingress
+    sha: b248405d69271d567ca99e8b20740efbe3eb6555
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      feat: add k8n secrets
+    sha: bd402cedbaad49fb945880adf6953bcb7bd1816c
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      feat: add oidc support
+    sha: c971aec1d52bfcd82daf35fc3ff0fca5b49f45de
+  gitHttpUrl: https://github.com/property-xyz/data-export-service
+  gitOwner: property-xyz
+  gitRepository: data-export-service
+  name: '{{ .Chart.Name }}'
+  releaseNotesURL: https://github.com/property-xyz/data-export-service/releases/tag/v0.2.1
+  version: v0.2.1
+status: {}
+ 
+{{- end }}

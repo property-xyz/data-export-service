@@ -1,0 +1,48 @@
+{{- if .Capabilities.APIVersions.Has "jenkins.io/v1/Release" }}
+apiVersion: jenkins.io/v1
+kind: Release
+metadata:
+  creationTimestamp: "2021-03-01T13:23:56Z"
+  deletionTimestamp: null
+  name: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  commits:
+  - author:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    branch: master
+    committer:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    message: |
+      chore: release 0.3.2
+    sha: ffe9b2f8787951bec93e96e9d74a856dcaa52aa6
+  - author:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    branch: master
+    committer:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    message: |
+      chore: add variables
+    sha: 07e0fb2283f9695ebe2715e52771f155e3f56dcb
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      fix: disable health endpoint authentication
+    sha: 88e6f0f0bf6403d1ed7eaba5b0a1b469ee5fff78
+  gitHttpUrl: https://github.com/property-xyz/data-export-service
+  gitOwner: property-xyz
+  gitRepository: data-export-service
+  name: '{{ .Chart.Name }}'
+  releaseNotesURL: https://github.com/property-xyz/data-export-service/releases/tag/v0.3.3
+  version: v0.3.3
+status: {}
+ 
+{{- end }}

@@ -15,4 +15,4 @@ rules:
       - list
       - watch
     resourceNames:
-      -  {{ template  "name" .}}-scr
+      -  {{ template "name" .}}-secrets

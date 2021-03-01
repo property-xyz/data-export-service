@@ -1,6 +1,7 @@
 package xyz.property.data.search.resource;
 
 
+import io.quarkus.security.Authenticated;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.faulttolerance.Timeout;
@@ -42,6 +43,7 @@ public class SearchResource {
     @Path("/properties-for-sale")
     @Retry
     @CircuitBreaker
+    @Authenticated
     @Produces(MediaType.APPLICATION_JSON)
     public SearchResponse getAvailable(@QueryParam("search_after") String searchIndex) throws IOException {
         if (searchIndex != null) {

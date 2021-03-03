@@ -33,6 +33,7 @@ public class ExportResource {
     public ExportResource() {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(QueryBuilders.termQuery("property.published", true));
+        searchSourceBuilder.size(100);
         searchSourceBuilder.sort(SortBuilders.fieldSort("property_key.keyword").order(SortOrder.DESC));
         this.searchSourceBuilder = searchSourceBuilder;
         this.searchRequest = new SearchRequest("properties_for_sale");

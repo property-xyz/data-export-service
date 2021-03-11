@@ -1,0 +1,48 @@
+{{- if .Capabilities.APIVersions.Has "jenkins.io/v1/Release" }}
+apiVersion: jenkins.io/v1
+kind: Release
+metadata:
+  creationTimestamp: "2021-03-11T13:17:13Z"
+  deletionTimestamp: null
+  name: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+spec:
+  commits:
+  - author:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    branch: master
+    committer:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    message: |
+      chore: release 0.4.0
+    sha: 062cfd7d4b4bbe70aa0c27cf3af4069c601e4b4d
+  - author:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    branch: master
+    committer:
+      email: jenkins-x@googlegroups.com
+      name: jenkins-x-bot
+    message: |
+      chore: add variables
+    sha: 206a5fb8d24788c0e03821e6c3dc6f800432456b
+  - author:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    branch: master
+    committer:
+      email: simone@property.xyz
+      name: Simone Di Cola
+    message: |
+      feat: update query size to 100 results
+    sha: e39ec726c2f0e133db193e10f01bac7771e9cb2a
+  gitHttpUrl: https://github.com/property-xyz/data-export-service
+  gitOwner: property-xyz
+  gitRepository: data-export-service
+  name: '{{ .Chart.Name }}'
+  releaseNotesURL: https://github.com/property-xyz/data-export-service/releases/tag/v0.4.1
+  version: v0.4.1
+status: {}
+ 
+{{- end }}
